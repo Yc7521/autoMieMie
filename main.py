@@ -28,10 +28,17 @@ def main():
         'Accept-Encoding': 'gzip,compress,br,deflate',
         'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.28(0x18001c26) NetType/WIFI Language/zh_CN',
     }
-    response = httpx.get(
-        f"https://cat-match.easygame2021.com/sheep/v1/game/game_over?rank_score={args.rank_score}&rank_state={args.rank_state}&rank_time={args.rank_time}&rank_role={args.rank_role}&skin={args.skin}&t={args.t}", headers=header).json()
-    print(
-        f"运行时间：{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}: {response}")
+    err_time = 0
+    while err_time < 5:
+        try:
+            response = httpx.get(
+                f"https://cat-match.easygame2021.com/sheep/v1/game/game_over?rank_score={args.rank_score}&rank_state={args.rank_state}&rank_time={args.rank_time}&rank_role={args.rank_role}&skin={args.skin}&t={args.t}", headers=header).json()
+            print(
+                f"运行时间：{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}: {response}")
+            break
+        except:
+            err_time+=1
+            continue
 
 
 if __name__ == '__main__':
