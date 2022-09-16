@@ -11,8 +11,7 @@ on:
   watch:
     types: [started]
 
-permissions:
-  contents: read
+permissions: read-all|write-all
 
 jobs:
   Call-APi:
