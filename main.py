@@ -36,8 +36,9 @@ def main():
             print(
                 f"运行时间：{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}: {response}")
             return
-        except:
+        except Exception as e:
             err_time += 1
+            print(f"err-{err_time}: {e}")
             continue
     print(f"运行时间：{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}: 请求失败")
     raise Exception("请求失败")
