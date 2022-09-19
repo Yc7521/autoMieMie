@@ -3,6 +3,49 @@ import json
 import time
 import httpx
 
+def old_api(header, args):
+    err_time = 0
+    err_msg = ""
+    while err_time < 5:
+        try:
+            response = httpx.get(
+                f"https://cat-match.easygame2021.com/sheep/v1/game/game_over?rank_score={args.rank_score}&rank_state={args.rank_state}&rank_time={args.rank_time}&rank_role={args.rank_role}&skin={args.skin}&t={args.t}", headers=header).json()
+            print(
+                f"运行时间：{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}: {response}")
+            return
+        except Exception as e:
+            err_time += 1
+            err_msg += f"err-{err_time}: {e}\n"
+            continue
+    print(f"运行时间：{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}: 请求失败")
+    raise Exception(f"请求失败:\n{err_msg}")
+
+def new_api(header, args):
+    err_time = 0
+    err_msg = ""
+    while err_time < 5:
+        try:
+            response = httpx.post(
+                 f"https://cat-match.easygame2021.com/sheep/v1/game/game_over_ex", headers=header,
+                 # rank_score={args.rank_score}&rank_state={args.rank_state}&rank_time={args.rank_time}&rank_role={args.rank_role}&skin={args.skin}&t={args.t}
+                 content=json.dumps({
+                     "rank_score": args.rank_score,
+                     "rank_state": args.rank_state,
+                     "rank_time": args.rank_time,
+                     "rank_role": args.rank_role,
+                     "skin": args.skin,
+                     "MatchPlayInfo": "CAMiBQjnARAAIgYI5gEQ2wEiBgiAAhDWASIGCP8BEN8BIgYInwIQsAQiBgieAhCQAyIGCJwCENEH"
+                 })
+             ).json()
+            print(
+                f"运行时间：{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}: {response}")
+            return
+        except Exception as e:
+            err_time += 1
+            err_msg += f"err-{err_time}: {e}\n"
+            continue
+    print(f"运行时间：{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}: 请求失败")
+    raise Exception(f"请求失败:\n{err_msg}")
 
 def main():
     parser = argparse.ArgumentParser(
@@ -38,21 +81,7 @@ def main():
         'Accept-Encoding': 'gzip,compress,br,deflate',
         'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.28(0x18001c26) NetType/WIFI Language/zh_CN',
     }
-    err_time = 0
-    err_msg = ""
-    while err_time < 5:
-        try:
-            response = httpx.get(
-                f"https://cat-match.easygame2021.com/sheep/v1/game/game_over?rank_score={args.rank_score}&rank_state={args.rank_state}&rank_time={args.rank_time}&rank_role={args.rank_role}&skin={args.skin}&t={args.t}", headers=header).json()
-            print(
-                f"运行时间：{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}: {response}")
-            return
-        except Exception as e:
-            err_time += 1
-            err_msg += f"err-{err_time}: {e}\n"
-            continue
-    print(f"运行时间：{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}: 请求失败")
-    raise Exception(f"请求失败:\n{err_msg}")
+    new_api(header, args)
 
 
 if __name__ == '__main__':
