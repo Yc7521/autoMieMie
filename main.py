@@ -1,4 +1,5 @@
 import argparse
+import json
 import time
 import httpx
 
@@ -19,6 +20,15 @@ def main():
                         help='t token, required')
 
     args = parser.parse_args()
+#     print(f"""{{
+#   "rank_time": {args.rank_time},
+#   "rank_role": {args.rank_role},
+#   "rank_score": {args.rank_score},
+#   "rank_state": {args.rank_state},
+#   "skin": {args.skin}
+# }}
+# """)
+#     return
 
     header = {
         'Host': 'cat-match.easygame2021.com',
@@ -32,8 +42,18 @@ def main():
     err_msg = ""
     while err_time < 5:
         try:
-            response = httpx.get(
-                f"https://cat-match.easygame2021.com/sheep/v1/game/game_over_ex?rank_score={args.rank_score}&rank_state={args.rank_state}&rank_time={args.rank_time}&rank_role={args.rank_role}&skin={args.skin}&t={args.t}", headers=header).json()
+            response = httpx.post(
+                f"https://cat-match.easygame2021.com/sheep/v1/game/game_over_ex", headers=header,
+                # rank_score={args.rank_score}&rank_state={args.rank_state}&rank_time={args.rank_time}&rank_role={args.rank_role}&skin={args.skin}&t={args.t}
+                content=json.dumps({
+                    "rank_score": args.rank_score,
+                    "rank_state": args.rank_state,
+                    "rank_time": args.rank_time,
+                    "rank_role": args.rank_role,
+                    "skin": args.skin,
+                    "MatchPlayInfo": "CA=="
+                })
+            ).json()
             print(
                 f"运行时间：{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}: {response}")
             return
