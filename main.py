@@ -13,8 +13,8 @@ def main():
                         help='rank_state default 1')
     parser.add_argument('--rank_time', type=int, default=320,
                         help='rank_time default 320')
-    parser.add_argument('--rank_role', type=int, default=2,
-                        help='rank_role default 2')
+    parser.add_argument('--rank_role', type=int, default=1,
+                        help='rank_role default 1')
     parser.add_argument('--skin', type=int, default=1, help='skin default 1')
     parser.add_argument('--t', type=str, required=True,
                         help='t token, required')
