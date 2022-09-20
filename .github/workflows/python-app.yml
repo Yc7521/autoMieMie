@@ -34,9 +34,10 @@ jobs:
       - name: run
         env:
           TOKEN: ${{ secrets.TOKEN }}
+          UID: ${{ secrets.UID }}
         run: |
           # run with args
-          python main.py --t "$TOKEN" >> ./run.log
+          python main.py --t "$TOKEN" --uid "$UID" >> ./run.log
           tail run.log
       - name: Commit log
         env:
